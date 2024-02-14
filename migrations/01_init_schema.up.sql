@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS clientes (
+    ID SERIAL PRIMARY KEY,
+    Nome VARCHAR(255) NOT NULL,
+    Sobrenome VARCHAR(255) NOT NULL,
+    Contato VARCHAR(255),
+    Endereco VARCHAR(255),
+    Nascimento DATE,
+    CPF VARCHAR(11) UNIQUE NOT NULL
+);

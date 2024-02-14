@@ -1,0 +1,279 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API RESTful CRUD em Golang usando o Swagger.",
+        "title": "Crud-Golang-RabbitMQ API RESTful",
+        "termsOfService": "https://github.com/emersonamorim-dev",
+        "contact": {
+            "name": "Emerson Amorim DEV",
+            "url": "https://github.com/emersonamorim-dev"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8081",
+    "basePath": "/api/v1",
+    "paths": {
+        "/clientes": {
+            "post": {
+                "description": "Cria um novo cliente com os dados enviados",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clientes"
+                ],
+                "summary": "Adiciona um novo cliente",
+                "parameters": [
+                    {
+                        "description": "Dados do Cliente",
+                        "name": "cliente",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Clientes"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Clientes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+
+        "/listarclientes": {
+            "get": {
+                "description": "Retorna todos os clientes",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clientes"
+                ],
+                "summary": "Lista todos os clientes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Clientes"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPError"
+                        }
+                    }
+                }
+            }
+        },        
+
+
+        "/clientes/{id}": {
+            "get": {
+                "description": "Retorna um cliente dado seu ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clientes"
+                ],
+                "summary": "Busca um cliente por ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID do Cliente",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Clientes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Atualiza os dados de um cliente com base no ID fornecido",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clientes"
+                ],
+                "summary": "Atualiza um cliente",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID do Cliente",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados atualizados do Cliente",
+                        "name": "cliente",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Clientes"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Clientes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deleta um cliente com base no ID fornecido",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clientes"
+                ],
+                "summary": "Deleta um cliente",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID do Cliente",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPMessage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.HTTPError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.HTTPMessage": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Clientes": {
+            "type": "object",
+            "properties": {
+                "contato": {
+                    "type": "string"
+                },
+                "cpf": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "endereco": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "nascimento": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "sobrenome": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

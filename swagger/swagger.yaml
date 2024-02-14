@@ -1,0 +1,103 @@
+basePath: /api/v1
+host: localhost:8081
+info:
+  contact:
+    name: Emerson Amorim Dev
+    url: https://github.com/emersonamorim-dev
+  description: API RESTful CRUD em Golang usando o Swagger.
+  termsOfService: https://example.com/terms/
+  title: Crud-Golang-RabbitMQ API RESTful
+  version: "1.0"
+paths:
+  /clientes:
+    post:
+      summary: Cria um novo cliente
+      description: Cria um novo cliente com base nos dados fornecidos
+      parameters:
+        - name: body
+          in: body
+          description: Dados do cliente a ser criado
+          required: true
+          schema:
+            $ref: "#/definitions/ClienteInput"
+      responses:
+        200:
+          description: Retorna o cliente criado
+          schema:
+            $ref: "#/definitions/ClienteOutput"
+        400:
+          description: Requisição inválida
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /clientes/{id}:
+    get:
+      summary: Obtém um cliente pelo ID
+      description: Obtém um cliente existente pelo ID fornecido
+      parameters:
+        - name: id
+          in: path
+          description: ID do cliente a ser obtido
+          required: true
+          type: string
+      responses:
+        200:
+          description: Retorna o cliente obtido
+          schema:
+            $ref: "#/definitions/ClienteOutput"
+        404:
+          description: Cliente não encontrado
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    put:
+      summary: Atualiza um cliente existente
+      description: Atualiza um cliente existente com base nos dados fornecidos
+      parameters:
+        - name: id
+          in: path
+          description: ID do cliente a ser atualizado
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Dados do cliente a serem atualizados
+          required: true
+          schema:
+            $ref: "#/definitions/ClienteInput"
+      responses:
+        200:
+          description: Retorna o cliente atualizado
+          schema:
+            $ref: "#/definitions/ClienteOutput"
+        404:
+          description: Cliente não encontrado
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      summary: Deleta um cliente existente
+      description: Deleta um cliente existente com base no ID fornecido
+      parameters:
+        - name: id
+          in: path
+          description: ID do cliente a ser deletado
+          required: true
+          type: string
+      responses:
+        204:
+          description: Cliente deletado com sucesso
+        404:
+          description: Cliente não encontrado
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+definitions:
+  ClienteInput:
+    type: object
+    properties:
+      // Definir propriedades do ClienteInput aqui
+  ClienteOutput:
+    type: object
+    properties:
+      // Definir propriedades do ClienteOutput aqui
+  ErrorResponse:
+    type: object
+    properties:
+      // Definir propriedades do ErrorResponse aqui

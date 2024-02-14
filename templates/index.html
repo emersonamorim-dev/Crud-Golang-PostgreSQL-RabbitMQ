@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+            margin: 0;
+        }
+
+        #tetris-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #tetris-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 20px);
+            grid-gap: 1px;
+            margin-top: 50px;
+            background: #ccc;
+            padding: 10px;
+        }
+
+        #tetris-grid div {
+            width: 20px;
+            height: 20px;
+            background: #eee;
+            transition: background-color 0.3s ease;
+        }
+
+        .tetrimino {
+            background-color: #333;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .fixed {
+            background-color: #666;
+        }
+
+        #score {
+            margin: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        #start-button {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        #start-button:hover {
+            background-color: #555;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            display: inline-block;
+        }
+
+        .card {
+            width: 320px;
+            height: 130px;
+            margin-top: 18px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+
+        .card:hover {
+            transform: rotateY(360deg);
+        }
+
+        .front,
+        .back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+        }
+
+        .front {
+            background-color: #2d72da;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .back {
+            background-color: #47a3ca;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transform: rotateY(180deg);
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        .card-container:hover .back {
+            transform: rotateY(0deg);
+        }
+
+        .card-container:hover .front,
+        .card-container:hover .back {
+            color: white;
+            outline: none;
+        }
+
+        .card-container .front a:focus,
+        .card-container .back a:focus {
+            outline: none;
+            color: white;
+        }
+
+        .card-container .front a:visited,
+        .card-container .back a:visited {
+            color: white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <div id="tetris-container">
+
+        <div class="card-container" onclick="flipCard()">
+            <div class="card">
+                <div class="front">
+                    <div class="content">
+                        <h2>Info</h2>
+                        <p>Nome: Emerson Amorim - Full Stack</p>
+                        <p>Email: emerson_tecno@hotmail.com</p>
+                    </div>
+                </div>
+                <div class="back">
+                    <div class="content">
+                        <h2>Network</h2>
+                        <p><a href="https://linkedin.com/in/emerson-amorim-dev" target="_blank">LinkedIn:
+                                linkedin.com/in/emerson-amorim-dev</a></p>
+                        <p><a href="https://github.com/emersonamorim-dev" target="_blank">GitHub:
+                                github.com/emersonamorim-dev</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="tetris-grid"></div>
+        <button id="start-button">Start/Pause</button>
+        <div id="score">Score: 0</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.querySelector('#tetris-grid');
+            for (let i = 0; i < 200; i++) {
+                const square = document.createElement('div');
+                grid.appendChild(square);
+            }
+
+            const startBtn = document.getElementById('start-button');
+            const scoreDisplay = document.getElementById('score');
+            let squares = Array.from(document.querySelectorAll('#tetris-grid div'));
+            const width = 10;
+            let nextRandom = 0;
+            let timerId;
+            let score = 0;
+            const colors = ['orange', 'red', 'blue', 'green', 'purple', 'cyan', 'magenta'];
+
+            // Tetriminos
+            const lTetrimino = [[1, width + 1, width * 2 + 1, 2], [width, width + 1, width + 2, width * 2 + 2], [1, width + 1, width * 2 + 1, width * 2], [width, width * 2, width * 2 + 1, width * 2 + 2]];
+            const zTetrimino = [[0, width, width + 1, width * 2 + 1], [width + 1, width + 2, width * 2, width * 2 + 1], [0, width, width + 1, width * 2 + 1], [width + 1, width + 2, width * 2, width * 2 + 1]];
+            const tTetrimino = [[1, width, width + 1, width + 2], [1, width + 1, width + 2, width * 2 + 1], [width, width + 1, width + 2, width * 2 + 1], [1, width, width + 1, width * 2 + 1]];
+            const oTetrimino = [[0, 1, width, width + 1]];
+            const iTetrimino = [[1, width + 1, width * 2 + 1, width * 3 + 1], [width, width + 1, width + 2, width + 3], [1, width + 1, width * 2 + 1, width * 3 + 1], [width, width + 1, width + 2, width + 3]];
+
+            const theTetriminos = [lTetrimino, zTetrimino, tTetrimino, oTetrimino, iTetrimino];
+
+            let currentPosition = 4;
+            let currentRotation = 0;
+            let random = Math.floor(Math.random() * theTetriminos.length);
+            let current = theTetriminos[random][currentRotation];
+
+            let downHeld = false;
+
+            function draw() {
+                current.forEach(index => {
+                    squares[currentPosition + index].classList.add('tetrimino');
+                    squares[currentPosition + index].style.backgroundColor = colors[random];
+                });
+            }
+
+            function undraw() {
+                current.forEach(index => {
+                    squares[currentPosition + index].classList.remove('tetrimino');
+                    squares[currentPosition + index].style.backgroundColor = '';
+                });
+            }
+
+            function control(e) {
+                if (e.keyCode === 37) {
+                    moveLeft();
+                } else if (e.keyCode === 38) {
+                    rotate();
+                } else if (e.keyCode === 39) {
+                    moveRight();
+                } else if (e.keyCode === 40) {
+                    if (!downHeld) {
+                        moveDown();
+                        downHeld = true;
+                    }
+                }
+            }
+
+            document.addEventListener('keydown', control);
+            document.addEventListener('keyup', (e) => {
+                if (e.keyCode === 40) {
+                    downHeld = false;
+                }
+            });
+
+            function moveDown() {
+                undraw();
+                currentPosition += width;
+                draw();
+                freeze();
+            }
+
+            function startGame() {
+                if (!timerId) {
+                    draw();
+                    timerId = setInterval(moveDown, 1000);
+                    nextRandom = Math.floor(Math.random() * theTetriminos.length);
+                }
+            }
+
+            startBtn.addEventListener('click', () => {
+                if (timerId) {
+                    clearInterval(timerId);
+                    timerId = null;
+                } else {
+                    startGame();
+                }
+            });
+
+            function freeze() {
+                if (current.some(index => {
+                    const nextIndex = currentPosition + index + width;
+                    return nextIndex >= 200 || squares[nextIndex].classList.contains('fixed');
+                })) {
+                    current.forEach(index => squares[currentPosition + index].classList.add('fixed'));
+                    random = nextRandom;
+                    nextRandom = Math.floor(Math.random() * theTetriminos.length);
+                    current = theTetriminos[random][currentRotation];
+                    currentPosition = 4;
+                    draw();
+                    addScore();
+                    gameOver();
+                }
+            }
+
+
+            function moveLeft() {
+                undraw();
+                const isAtLeftEdge = current.some(index => (currentPosition + index) % width === 0);
+                if (!isAtLeftEdge) currentPosition -= 1;
+                if (current.some(index => squares[currentPosition + index].classList.contains('fixed'))) {
+                    currentPosition += 1;
+                }
+                draw();
+            }
+
+            function moveRight() {
+                undraw();
+                const isAtRightEdge = current.some(index => (currentPosition + index) % width === width - 1);
+                if (!isAtRightEdge) currentPosition += 1;
+                if (current.some(index => squares[currentPosition + index].classList.contains('fixed'))) {
+                    currentPosition -= 1;
+                }
+                draw();
+            }
+
+            function rotate() {
+                undraw();
+                currentRotation++;
+                if (currentRotation === current.length) {
+                    currentRotation = 0;
+                }
+                current = theTetriminos[random][currentRotation];
+                draw();
+            }
+
+            function addScore() {
+                for (let i = 0; i < 199; i += width) {
+                    const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9];
+
+                    if (row.every(index => squares[index].classList.contains('fixed'))) {
+                        score += 10;
+                        scoreDisplay.innerHTML = 'Score: ' + score;
+                        row.forEach(index => {
+                            squares[index].classList.remove('fixed');
+                            squares[index].classList.remove('tetrimino');
+                            squares[index].style.backgroundColor = '';
+                        });
+                        const squaresRemoved = squares.splice(i, width);
+                        squares = squaresRemoved.concat(squares);
+                        squares.forEach(cell => grid.appendChild(cell));
+
+                        // Enviar dados para o endpoint
+                        enviarDados();
+                    }
+                }
+            }
+
+            function gameOver() {
+                if (current.some(index => squares[currentPosition + index].classList.contains('fixed'))) {
+                    scoreDisplay.innerHTML = 'Game Over. Score: ' + score;
+                    clearInterval(timerId);
+                }
+            }
+
+            function enviarDados() {
+                const dadosDoCliente = {
+                    Nome: 'Emerson',
+                    Sobrenome: 'Amorim Full Stack',
+                    Contato: '1199988-1881',
+                    Endereco: 'Rua sn, 123',
+                    Nascimento: '1981/02/18',
+                    CPF: '97582957891'
+                };
+
+                fetch('http://localhost:8081/clientes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dadosDoCliente),
+                })
+                    .then(response => response.json())
+                    .then(data => console.log('Sucesso:', data))
+                    .catch((error) => console.error('Erro:', error));
+            }
+
+            function flipCard() {
+                var card = document.querySelector('.card');
+                card.classList.toggle('flipped');
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,159 @@
+basePath: /api/v1
+definitions:
+  handler.HTTPError:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  handler.HTTPMessage:
+    properties:
+      message:
+        type: string
+    type: object
+  model.Clientes:
+    properties:
+      contato:
+        type: string
+      cpf:
+        type: string
+      created_at:
+        type: string
+      endereco:
+        type: string
+      id:
+        type: integer
+      nascimento:
+        type: string
+      nome:
+        type: string
+      sobrenome:
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact:
+    name: Emerson Amorim Dev
+    url: https://github.com/emersonamorim-dev
+  description: API RESTful CRUD em Golang usando o Swagger.
+  termsOfService: https://github.com/emersonamorim-dev
+  title: Crud-Golang-RabbitMQ API RESTful
+  version: "1.0"
+paths:
+  /clientes:
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo cliente com os dados enviados
+      parameters:
+      - description: Dados do Cliente
+        in: body
+        name: cliente
+        required: true
+        schema:
+          $ref: '#/definitions/model.Clientes'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Clientes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Adiciona um novo cliente
+      tags:
+      - clientes
+  /clientes/{id}:
+    delete:
+      description: Deleta um cliente com base no ID fornecido
+      parameters:
+      - description: ID do Cliente
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.HTTPMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Deleta um cliente
+      tags:
+      - clientes
+    get:
+      description: Retorna um cliente dado seu ID
+      parameters:
+      - description: ID do Cliente
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Clientes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Busca um cliente por ID
+      tags:
+      - clientes
+    put:
+      consumes:
+      - application/json
+      description: Atualiza os dados de um cliente com base no ID fornecido
+      parameters:
+      - description: ID do Cliente
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Dados atualizados do Cliente
+        in: body
+        name: cliente
+        required: true
+        schema:
+          $ref: '#/definitions/model.Clientes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Clientes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Atualiza um cliente
+      tags:
+      - clientes
+swagger: "2.0"

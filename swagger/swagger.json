@@ -1,0 +1,189 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API RESTful CRUD em Golang usando o Swagger.",
+        "title": "Crud-Golang-RabbitMQ API RESTful",
+        "termsOfService": "https://example.com/terms/",
+        "contact": {
+            "name": "Emerson Amorim DEV",
+            "url": "https://github.com/emersonamorim-dev"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8081",
+    "basePath": "/api/v1",
+    "paths": {
+        "/clientes": {
+            "post": {
+                "summary": "Criar um novo cliente",
+                "description": "Cria um novo cliente com os dados fornecidos no corpo da solicitação.",
+                "responses": {
+                    "201": {
+                        "description": "Cliente criado com sucesso"
+                    },
+                    "400": {
+                        "description": "Requisição inválida"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "get": {
+                "summary": "Listar todos os clientes",
+                "description": "Retorna uma lista de todos os clientes cadastrados.",
+                "responses": {
+                    "200": {
+                        "description": "Lista de clientes",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Cliente"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+
+        "/listarclientes": {
+            "get": {
+                "description": "Retorna todos os clientes",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clientes"
+                ],
+                "summary": "Lista todos os clientes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Clientes"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HTTPError"
+                        }
+                    }
+                }
+            }
+        },  
+
+
+        "/clientes/{id}": {
+            "get": {
+                "summary": "Obter um cliente por ID",
+                "description": "Retorna os detalhes de um cliente específico com o ID fornecido.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do cliente a ser obtido",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do cliente",
+                        "schema": {
+                            "$ref": "#/definitions/Cliente"
+                        }
+                    },
+                    "404": {
+                        "description": "Cliente não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Atualizar um cliente",
+                "description": "Atualiza os dados de um cliente existente com o ID fornecido.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do cliente a ser atualizado",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cliente atualizado com sucesso"
+                    },
+                    "400": {
+                        "description": "Requisição inválida"
+                    },
+                    "404": {
+                        "description": "Cliente não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Excluir um cliente",
+                "description": "Exclui um cliente existente com o ID fornecido.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do cliente a ser excluído",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Cliente excluído com sucesso"
+                    },
+                    "404": {
+                        "description": "Cliente não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Cliente": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "ID do cliente"
+                },
+                "nome": {
+                    "type": "string",
+                    "description": "Nome do cliente"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Endereço de e-mail do cliente"
+                }
+            }
+        }
+    }
+}
