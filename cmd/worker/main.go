@@ -17,34 +17,34 @@ import (
 func main() {
 	// Carrega variáveis de ambiente do arquivo .env
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+		log.Fatalf("Erro a carregar .env file: %v", err)
 	}
 
 	rabbitMQURL := os.Getenv("RABBITMQ_URL")
 	postgresURL := os.Getenv("POSTGRES_URL")
 
-	// Conectar ao PostgreSQL
+	// Conecta ao PostgreSQL
 	db, err := connectToGormDB(postgresURL)
 	if err != nil {
-		log.Fatalf("Unable to connect to database: %v", err)
+		log.Fatalf("Não é possível se conectar ao BD: %v", err)
 	}
 	// Obtem a conexão SQL DB subjacente e fecha
 	sqlDB, err := db.DB()
 	if err != nil {
-		log.Fatalf("Failed to get sql DB from gorm DB: %v", err)
+		log.Fatalf("Falha ao obter BD SQL de gorm DB: %v", err)
 	}
 	defer sqlDB.Close()
 
 	// Conecta ao RabbitMQ
 	conn, err := amqp.Dial(rabbitMQURL)
 	if err != nil {
-		log.Fatalf("Failed to connect to RabbitMQ: %v", err)
+		log.Fatalf("Falha ao conectar-se a RabbitMQ: %v", err)
 	}
 	defer conn.Close()
 
 	ch, err := conn.Channel()
 	if err != nil {
-		log.Fatalf("Failed to open a channel: %v", err)
+		log.Fatalf("Falha ao abrir um canal: %v", err)
 	}
 	defer ch.Close()
 
@@ -57,7 +57,7 @@ func main() {
 		nil,
 	)
 	if err != nil {
-		log.Fatalf("Failed to declare a queue: %v", err)
+		log.Fatalf("Não foi possível declarar uma queue: %v", err)
 	}
 
 	msgs, err := ch.Consume(
@@ -77,7 +77,7 @@ func main() {
 
 	go func() {
 		for d := range msgs {
-			log.Printf("Received a message: %s", d.Body)
+			log.Printf("Recebeu uma mensagem: %s", d.Body)
 
 			// Processa a mensagem
 			if err := processMessage(db, d.Body); err != nil {
@@ -95,7 +95,7 @@ func processMessage(db *gorm.DB, messageBody []byte) error {
 	var cliente model.Clientes
 	err := json.Unmarshal(messageBody, &cliente)
 	if err != nil {
-		log.Printf("Error unmarshalling message: %v", err)
+		log.Printf("Erro ao desempacotar mensagem: %v", err)
 		return err
 	}
 
