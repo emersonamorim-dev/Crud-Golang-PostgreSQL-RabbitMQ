@@ -22,7 +22,7 @@ Desenvolvido uma API RESTful CRUD em Golang que utilizei requisições HTTP para
 go run main.go
 ```
 
-- Pacotes para rodar o projeto:
+### Pacotes para rodar o projeto:
 
 - Pacote do Gorm ORM (Object-Relational Mapping)
 ``` 
