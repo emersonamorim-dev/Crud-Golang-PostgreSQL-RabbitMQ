@@ -1,7 +1,7 @@
-### Crud Golang com Postgres e RabbitMQ 🚀 🔄 🌐
+### Crud Golang com PostgreSQL e RabbitMQ 🚀 🔄 🌐
 
 Codificação para um teste técnico com a Innolevels para um CRUD (Create, Read, Update, Delete) desenvolvido em GoLang com o framework Gin, utilizando PostgreSQL e RabbitMQ para persistência e comunicação assíncrona.
-Desenvolvi uma API RESTful CRUD em Golang, que utilizei requisições HTTP para realizar operações CRUD em um banco de dados Postgres. Os registros a serem inseridos no banco de dados serão enviados para uma fila na RabbitMQ e, posteriormente, processados por um worker. 
+Desenvolvi uma API RESTful CRUD em Golang, que utilizei requisições HTTP para realizar operações CRUD em um banco de dados PostgreSQL. Os registros a serem inseridos no banco de dados serão enviados para uma fila na RabbitMQ e, posteriormente, processados por um worker. 
 
 Utilizei o Swagger para gerenciar os endpoints e facilitar a consulta dos mesmos.
 
@@ -17,7 +17,7 @@ Os dados são relacionados a dados pessoais de clientes, seguindo boas práticas
 - Gin
 - Gorm
 - TestFy
-- Postgres
+- PostgreSQL
 - RabbitMQ
 - Docker
 - Swagger
@@ -37,7 +37,7 @@ go run main.go
 go get -u gorm.io/gorm
 ```
 
-- Pacote do Postgres
+- Pacote do PostgreSQL
 ``` 
 go get -u gorm.io/driver/postgres
 ```
