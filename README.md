@@ -81,13 +81,13 @@ http://localhost:8081/clientes/
 }
 ```
 
-- Consulta com Metódo Get Listar todos
+- Consulta com Método Get Listar todos
 ``` 
 http://localhost:8081/clientes/
 
 ```
 
-- Consulta com Metódo Get por ID
+- Consulta com Método Get por ID
 ``` 
 http://localhost:8081/clientes/1
 
@@ -104,7 +104,7 @@ http://localhost:8081/clientes/1
 ```
 
 
-- Consulta com Metódo Update por ID
+- Consulta com Método Update por ID
 ``` 
 http://localhost:8081/clientes/1
 
@@ -120,7 +120,7 @@ http://localhost:8081/clientes/1
 }
 ```
 
-- Consulta com Metódo Delete por ID
+- Consulta com Método Delete por ID
 ``` 
 http://localhost:8081/clientes/1
 
