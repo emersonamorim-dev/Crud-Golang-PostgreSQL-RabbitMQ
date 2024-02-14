@@ -206,8 +206,8 @@ Utilização do padrão Service para encapsular a lógica de negócio.
 - Dependency Inversion Principle (DIP): O serviço depende apenas de abstrações, não de implementações concretas, facilitando a substituição de componentes.
 
 
-*** Bônus realizando uma Integração d o Jogo Tetris e um Endpoint de Envio de Dados Predefinidos
-O projeto também inclui uma integração com o Jogo Tetris, onde um endpoint específico envia dados predefinidos para o backend quando jogador realiza pontuação complentando uma linha horizontal, proporcionando uma experiência de jogo mais interativa. ***
+##### Bônus realizando uma Integração d o Jogo Tetris e um Endpoint de Envio de Dados Predefinidos
+O projeto também inclui uma integração com o Jogo Tetris, onde um endpoint específico envia dados predefinidos para o backend quando jogador realiza pontuação complentando uma linha horizontal, proporcionando uma experiência de jogo mais interativa. 
 
 
 
