@@ -207,7 +207,7 @@ Utilização do padrão Service para encapsular a lógica de negócio.
 
 
 ##### Bônus realizando uma Integração d o Jogo Tetris e um Endpoint de Envio de Dados Predefinidos
-O projeto também inclui uma integração com o Jogo Tetris, onde um endpoint específico envia dados predefinidos para o backend quando jogador realiza pontuação complentando uma linha horizontal, proporcionando uma experiência de jogo mais interativa. 
+O projeto também inclui uma integração com o Jogo Tetris, onde um Endpoint específico envia dados predefinidos para o Backend em Golang quando jogador realiza pontuação completando uma linha na horizontal e ganha pontos no Jogo Tretris, proporcionando uma experiência Inovadora e bastante interativa.
 
 
 
