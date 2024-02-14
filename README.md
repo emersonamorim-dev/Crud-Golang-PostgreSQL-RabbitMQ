@@ -213,7 +213,7 @@ O projeto também inclui uma integração com o Jogo Tetris, onde um endpoint es
 
 
 
-<img align="center" height="1920" width="1020" src="https://raw.githubusercontent.com/emersonamorim-dev/Crud-Golang-Postgres-RabbitMQ/main/templates/img/CrudGolangPostgresRabbitMQ.png" />
+
 
 
 
