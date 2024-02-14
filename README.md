@@ -212,7 +212,10 @@ O projeto também inclui uma integração com o Jogo Tetris, onde um endpoint es
 ## Screenshots Jogo Tetris
 
 
-<img align="center" height="900" width="720" src="https://github.com/emersonamorim-dev/Varejo-Golang-Microservices-DDD/blob/main/common/diagram.png](https://github.com/emersonamorim-dev/Crud-Golang-Postgres-RabbitMQ/blob/main/templates/img/CrudGolangPostgresRabbitMQ.png" />
+
+<img align="center" height="900" width="720" src="https://github.com/emersonamorim-dev/Varejo-Golang-Microservices-DDD/blob/main/common/diagram.png" />
+
+
 
 
 #### Conclusão
