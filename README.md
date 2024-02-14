@@ -65,7 +65,7 @@ Acesso ao Swagger quando subir aplicação nesse link:
 http://localhost:8081/swagger/index.html
 ```
 
-- Consulta com Metódo Post - Via Postman
+- Consulta com Método Post - Via Postman
 ``` 
 http://localhost:8081/clientes/
 
