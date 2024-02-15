@@ -90,7 +90,7 @@ func main() {
 		})
 	})
 
-	// Carregar a doc do Swagger
+	// Carrega a doc do Swagger
 	docs.SwaggerInfo.Host = "localhost:8081"
 	docs.SwaggerInfo.BasePath = "/"
 	url := ginSwagger.URL("http://localhost:8081/swagger/doc.json")
