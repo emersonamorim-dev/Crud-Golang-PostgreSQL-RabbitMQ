@@ -31,7 +31,7 @@ func (r *gormClientesRepository) Create(ctx context.Context, c model.Clientes) e
 	return result.Error
 }
 
-// Lista todos os clientes disponíveis no banco de dados.
+// Lista todos os clientes disponíveis no BD.
 func (r *gormClientesRepository) ListarTodos(ctx context.Context) ([]model.Clientes, error) {
 	var clientes []model.Clientes
 	result := r.db.WithContext(ctx).Find(&clientes)
