@@ -49,7 +49,7 @@ func (r *RabbitMQ) Publish(queueName string, msg []byte) error {
 		return err
 	}
 
-	// Configura a mensagem para publicação
+	// Config a mensagem para publicação
 	message := amqp.Publishing{
 		ContentType: "text/plain",
 		Body:        msg,
