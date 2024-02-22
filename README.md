@@ -18,6 +18,7 @@ Os dados são relacionados a dados pessoais de clientes, seguindo boas práticas
 - Gorm
 - TestFy
 - PostgreSQL
+- PGADMIN
 - RabbitMQ
 - Docker
 - Swagger
@@ -71,6 +72,11 @@ Acesso ao Swagger quando subir aplicação nesse link:
 
 ``` 
 http://localhost:8081/swagger/index.html
+```
+
+Acesso ao PGADMIN do PostgreSQL
+``` 
+http://localhost:5050/
 ```
 
 - Consulta com Método Post - Via Postman
