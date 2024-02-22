@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -30,23 +31,23 @@ import (
 // @host localhost:8081
 // @BasePath /api/v1
 func main() {
-
 	// Config do Gin
 	r := gin.Default()
 
 	// Config do RabbitMQ
-	rabbitMQURL := os.Getenv("RABBITMQ_URL")
-	if rabbitMQURL == "" {
-		log.Fatal("RABBITMQ_URL é requerido")
-	}
-	rabbitMQConn, err := amqp.Dial(rabbitMQURL)
+	rabbitMQHost := os.Getenv("RABBITMQ_HOST")
+	rabbitMQPort := os.Getenv("RABBITMQ_PORT")
+	rabbitMQURL := fmt.Sprintf("amqp://%s:%s/", rabbitMQHost, rabbitMQPort)
+
+	conn, err := amqp.Dial(rabbitMQURL)
 	if err != nil {
-		log.Fatalf("Falha ao conectar-se ao RabbitMQ: %v", err)
+		fmt.Println("Falha ao conectar-se ao RabbitMQ:", err)
+		os.Exit(1)
 	}
-	defer rabbitMQConn.Close()
+	defer conn.Close()
 
 	// Conexão com o RabbitMQ
-	rabbitMQ, err := queue.NewRabbitMQ(rabbitMQConn)
+	rabbitMQ, err := queue.NewRabbitMQ(conn)
 	if err != nil {
 		log.Fatalf("Falha ao inicializar RabbitMQ: %v", err)
 	}
@@ -90,7 +91,7 @@ func main() {
 		})
 	})
 
-	// Carrega a doc do Swagger
+	// Carregar a doc do Swagger
 	docs.SwaggerInfo.Host = "localhost:8081"
 	docs.SwaggerInfo.BasePath = "/"
 	url := ginSwagger.URL("http://localhost:8081/swagger/doc.json")
@@ -101,3 +102,4 @@ func main() {
 		log.Fatalf("Falha ao iniciar servidor: %v", err)
 	}
 }
+
