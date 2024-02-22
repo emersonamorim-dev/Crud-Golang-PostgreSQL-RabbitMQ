@@ -253,9 +253,11 @@
 
             function startGame() {
                 if (!timerId) {
-                    draw();
-                    timerId = setInterval(moveDown, 1000);
+                    random = nextRandom;
                     nextRandom = Math.floor(Math.random() * theTetriminos.length);
+                    current = theTetriminos[random][currentRotation]; 
+                    draw(); 
+                    timerId = setInterval(moveDown, 1000);
                 }
             }
 
