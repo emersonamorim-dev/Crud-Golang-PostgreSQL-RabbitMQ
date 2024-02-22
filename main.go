@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -69,17 +70,19 @@ func main() {
 		log.Fatalf("Falha ao executar migrações: %v", err)
 	}
 
-	// Repository
-	clientesRepo := repository.NewClientesRepository(db)
+   // Repository
+   clientesRepo := repository.NewClientesRepository(db)
+   
+   // Service
+   clienteService := service.NewClienteService(clientesRepo, rabbitMQ)
+   
+   // Handler
+   clientesHandler := handler.NewClientesHandler(clienteService, rabbitMQ) 
+   
+   // Config das rotas usando o clientesHandler
+   routes.SetupRouter(r, clientesHandler)
 
-	// Service
-	clienteService := service.NewClienteService(clientesRepo, rabbitMQ)
 
-	// Handler
-	clientesHandler := handler.NewClientesHandler(clienteService)
-
-	// Config das rotas usando o clientesHandler
-	routes.SetupRouter(r, clientesHandler)
 
 	// Config do diretório de templates HTML
 	r.LoadHTMLGlob("templates/*")
@@ -91,7 +94,7 @@ func main() {
 		})
 	})
 
-	// Carregar a doc do Swagger
+	// Carrega a doc do Swagger
 	docs.SwaggerInfo.Host = "localhost:8081"
 	docs.SwaggerInfo.BasePath = "/"
 	url := ginSwagger.URL("http://localhost:8081/swagger/doc.json")
@@ -102,4 +105,3 @@ func main() {
 		log.Fatalf("Falha ao iniciar servidor: %v", err)
 	}
 }
-
