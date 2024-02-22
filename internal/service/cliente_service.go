@@ -26,9 +26,11 @@ type service struct {
 	queueClient *queue.RabbitMQ
 }
 
+
 type QueueClient interface {
 	PublishMessage(queueName string, message amqp.Publishing) error
 }
+
 
 func NewClienteService(repo repository.ClientesRepository, queueClient *queue.RabbitMQ) ClienteService {
 	return &service{
@@ -36,6 +38,7 @@ func NewClienteService(repo repository.ClientesRepository, queueClient *queue.Ra
 		queueClient: queueClient,
 	}
 }
+
 
 // cria um novo cliente e publica uma mensagem no RabbitMQ
 func (s *service) CreateCliente(ctx context.Context, cliente model.Clientes) error {
@@ -79,3 +82,4 @@ func (s *service) UpdateCliente(ctx context.Context, cliente model.Clientes) err
 func (s *service) DeleteCliente(ctx context.Context, id uint) error {
 	return s.repo.Delete(ctx, uint(id))
 }
+
