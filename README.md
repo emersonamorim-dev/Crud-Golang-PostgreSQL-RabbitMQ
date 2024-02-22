@@ -84,6 +84,16 @@ http://localhost:5050/
 http://localhost:8081/clientes/
 
 ```
+
+Variáveis de Ambiente para adicionar em distro(Ubuntu ou Fedora)
+``` 
+export RABBITMQ_URL=amqp://guest:guest@locahost:5672 ou ip no lugar de localhost
+```
+
+``` 
+export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/seubancodados
+```
+
 ``` 
 {
   "nome": "Emerson",
