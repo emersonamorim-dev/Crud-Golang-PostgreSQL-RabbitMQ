@@ -1,22 +1,31 @@
 package handler
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
 	"Crud-Golang-RabbitMQ/internal/model"
 	"Crud-Golang-RabbitMQ/internal/service"
+	"Crud-Golang-RabbitMQ/internal/queue"
 
 	"github.com/gin-gonic/gin"
 )
 
 type ClientesHandler struct {
 	Service service.ClienteService
+	Queue   queue.QueueClient
 }
 
-// cria nova instância dependência do serviço injetada
-func NewClientesHandler(service service.ClienteService) *ClientesHandler {
-	return &ClientesHandler{Service: service}
+// função NewClientesHandler para receber o QueueClient
+func NewClientesHandler(service service.ClienteService, queue queue.QueueClient) *ClientesHandler {
+	return &ClientesHandler{
+		Service: service,
+		Queue:   queue,
+	}
 }
 
 // @Summary Adiciona um novo cliente
@@ -40,6 +49,20 @@ func (h *ClientesHandler) CreateCliente(c *gin.Context) {
 		return
 	}
 
+	// Utiliza SHA256 para gerar um hash do nome do cliente
+	hasher := sha256.New()
+	hasher.Write([]byte(cliente.Nome))
+	hashedNome := hex.EncodeToString(hasher.Sum(nil))
+
+	// Utiliza os primeiros 8 caracteres do hash para o nome da fila
+	nomeDaFila := "clienteQueue-" + hashedNome[:8]
+
+	// Mensagem a ser publicada no RabbitMQ
+	mensagem := fmt.Sprintf("Novo cliente criado: %s", cliente.Nome) 
+	if err := h.Queue.Publish(nomeDaFila, []byte(mensagem)); err != nil {
+		log.Printf("Erro ao publicar mensagem no RabbitMQ: %v", err)
+	}
+
 	c.JSON(http.StatusCreated, cliente)
 }
 
@@ -59,6 +82,8 @@ func (h *ClientesHandler) ListarClientes(c *gin.Context) {
 
 	c.JSON(http.StatusOK, clientes)
 }
+
+
 
 // @Summary Busca um cliente por ID
 // @Description Retorna um cliente dado seu ID
@@ -153,3 +178,4 @@ type HTTPError struct {
 type HTTPMessage struct {
 	Message string `json:"message"`
 }
+
