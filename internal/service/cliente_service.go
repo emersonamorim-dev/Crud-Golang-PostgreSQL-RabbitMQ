@@ -82,4 +82,3 @@ func (s *service) UpdateCliente(ctx context.Context, cliente model.Clientes) err
 func (s *service) DeleteCliente(ctx context.Context, id uint) error {
 	return s.repo.Delete(ctx, uint(id))
 }
-
