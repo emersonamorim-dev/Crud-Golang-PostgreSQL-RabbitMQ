@@ -47,7 +47,7 @@ services:
       RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: crudgolang
+      POSTGRES_DB: seubd
       POSTGRES_HOST: postgresql  
       POSTGRES_PORT: 5432
       RABBITMQ_USER: guest
