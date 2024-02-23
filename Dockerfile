@@ -25,6 +25,7 @@ WORKDIR /root/
 # Copiar o binário pré-compilado da etapa anterior
 COPY --from=builder /app/main .
 
+
 # Porta em que a aplicação irá rodar
 EXPOSE 8081
 
