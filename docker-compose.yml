@@ -4,24 +4,35 @@ services:
   rabbitmq:
     image: rabbitmq:management
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: nfcomlwp
+      RABBITMQ_DEFAULT_PASS: TXPMZVxpRpCuNhS8Dv26F43ZJ75H-TUg
     ports:
-      - "5672:5672" 
+      - "5672:5672"
       - "15672:15672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
-  
+
   postgresql:
     image: postgres:latest
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: seudb
+      POSTGRES_USER: postgres18
+      POSTGRES_PASSWORD: FN3YhPNnMHpNm2HnMZXlMLZwxmPHH2Oh
+      POSTGRES_DB: crudlang
     ports:
       - "5432:5432"
     volumes:
       - postgresql_data:/var/lib/postgresql/data
+
+  Crud-Golang-PostgreSQL-RabbitMQ:
+    image: minha-aplicacao-go # Nome correto da imagem Docker da sua aplicação
+    environment:
+      DATABASE_URL: "postgres://postgres18:FN3YhPNnMHpNm2HnMZXlMLZwxmPHH2Oh@dpg-cnbtu1acn0vc73950u2g-a:5432/crudlang"
+      RABBITMQ_URL: "amqps://nfcomlwp:TXPMZVxpRpCuNhS8Dv26F43ZJ75H-TUg@jackal.rmq.cloudamqp.com/nfcomlwp"
+    ports:
+      - "8081:8080" # Ajuste conforme a porta que sua aplicação utiliza
+    depends_on:
+      - postgresql
+      - rabbitmq
 
   pgadmin:
     image: dpage/pgadmin4
