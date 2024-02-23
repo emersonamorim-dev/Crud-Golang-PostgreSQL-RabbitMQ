@@ -1,4 +1,4 @@
-FROM golang:1.18-alpine AS builder
+FROM golang:1.21.5-alpine AS builder
 
 # Configurar o diretório de trabalho
 WORKDIR /app
