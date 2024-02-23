@@ -61,7 +61,7 @@ func main() {
 	// Inicializa repository, service, e handler
 	clientesRepo := repository.NewClientesRepository(db)
 	clienteService := service.NewClienteService(clientesRepo, rabbitMQClient)
-	clientesHandler := handler.NewClientesHandler(clienteService)
+	clientesHandler := handler.NewClientesHandler(clienteService, rabbitMQClient)
 
 	// Config das rotas
 	routes.SetupRouter(r, clientesHandler)
